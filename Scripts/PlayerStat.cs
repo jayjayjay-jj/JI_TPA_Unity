@@ -12,6 +12,10 @@ public class PlayerStat : MonoBehaviour
     public static int maxHP = 1000;
     public static int maxXP = 100;
 
+    public static float agility = 1;
+    public static float power = 1;
+    public static float strength = 1;
+
     public int currentHP;
     public int currentXP;
     public static int level = 1;
@@ -20,6 +24,7 @@ public class PlayerStat : MonoBehaviour
     public Slider levelBar;
     public TMP_Text hp;
     public TMP_Text xp;
+    public TMP_Text levelValue;
 
     public static bool Death;
 
@@ -28,6 +33,7 @@ public class PlayerStat : MonoBehaviour
     {
         currentHP = maxHP;
         currentXP = minXP;
+        level = 1;
 
         Death = false;
 
@@ -78,6 +84,7 @@ public class PlayerStat : MonoBehaviour
         {
             level++;
             Debug.Log(level);
+            levelValue.SetText("Level " + level);
             currentXP = currentXP - maxXP;
         }
 

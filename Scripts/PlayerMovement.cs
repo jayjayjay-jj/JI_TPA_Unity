@@ -39,13 +39,11 @@ public class PlayerMovement : MonoBehaviour
                 charMov.setPlayerSpeed(6f);
             }
 
-            /*
             if (Input.GetMouseButton(0))
             {
                 animator.SetBool("isRunning", false);
                 animator.SetBool("isPunching", true);
             }
-            */
 
             
             if (Input.GetMouseButton(1))

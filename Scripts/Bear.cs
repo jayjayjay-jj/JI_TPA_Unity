@@ -40,16 +40,16 @@ public class Bear : MonoBehaviour
         if(navMeshAgent.velocity.magnitude >= 0.1f)
         {
         */
-        if(range <= 5f)
+        if(range <= 2f)
         {
             navMeshAgent.isStopped = true;
             bearAnimator.SetTrigger("Attack1");
 
             //         playerStat.damagetoHP(100);
-            playerStat.currentHP -= 10;
+            playerStat.currentHP -= 5;
             bearAnimator.SetBool("Run Forward", false);
 
-        } else if(range > 5f && range <= 15f) 
+        } else if(range > 2f && range <= 15f) 
         {
             navMeshAgent.isStopped = false;
             bearAnimator.SetBool("Run Forward", true);
