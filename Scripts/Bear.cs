@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Bear : MonoBehaviour
 {
@@ -22,6 +23,10 @@ public class Bear : MonoBehaviour
     private PlayerStat playerStat;
 
     public AudioSource bearAttackAudio;
+    private float bearHP;
+
+    [SerializeField]
+    private Slider bearSlider;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +35,8 @@ public class Bear : MonoBehaviour
 
         attackingPlayer = false;
         bearAttackAudio.enabled = false;
+
+        bearHP = 100;
     }
 
     // Update is called once per frame
@@ -38,6 +45,8 @@ public class Bear : MonoBehaviour
         range = Vector3.Distance(playerTrans.position, bearTrans.position);
         Debug.Log(range);
         navMeshAgent.SetDestination(playerTrans.position);
+
+        bearSlider.value = (float)(bearHP / 100.0);
 
         /*
         if(navMeshAgent.velocity.magnitude >= 0.1f)

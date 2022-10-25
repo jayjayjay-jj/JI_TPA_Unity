@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     private CharacterMovement charMov;
     [SerializeField]
-    private AudioSource runSound, punchSound, attackSound;
+    private AudioSource runSound, punchSound, attackSound, rollingSound;
 
     // Start is called before the first frame update
     void Start()
@@ -19,71 +19,78 @@ public class PlayerMovement : MonoBehaviour
         runSound.enabled = false;
         punchSound.enabled = false;
         attackSound.enabled = false;
+        rollingSound.enabled = false;
         isHoldingWeapon = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-        else if (Input.GetKeyDown(KeyCode.C))
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
+        if(PlayerStat.Death == false) {
 
-        Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
-
-        if (direction.magnitude >= 0.1f && PlayerStat.Death == false)
-        {
-            runSound.enabled = true;
-            animator.SetBool("isRunning", true);
-
-            animator.SetFloat("xDir", direction.x);
-            animator.SetFloat("yDir", Mathf.Abs(direction.z));
-
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (Input.GetKeyDown(KeyCode.X))
             {
-                charMov.setPlayerSpeed(10f);
+                Cursor.lockState = CursorLockMode.Locked;
             }
-            else if (Input.GetKeyUp(KeyCode.LeftShift))
+            else if (Input.GetKeyDown(KeyCode.C))
             {
-                charMov.setPlayerSpeed(6f);
+                Cursor.lockState = CursorLockMode.None;
             }
-        }
-        else
-        {
-            animator.SetBool("isRunning", false);
-            runSound.enabled=false;
-        }
-        if (Input.GetMouseButton(0))
-        {
-            if (isHoldingWeapon == false){
-                animator.SetTrigger("isPunching");
-                punchSound.enabled = false;
-                punchSound.enabled = true;
-            }
-            else if (isHoldingWeapon == true)
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
+
+            Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
+
+            if (direction.magnitude >= 0.1f && PlayerStat.Death == false)
             {
-                animator.SetTrigger("isAttacking");
-                attackSound.enabled = false;
-                attackSound.enabled = true;
+                runSound.enabled = true;
+                animator.SetBool("isRunning", true);
+
+                animator.SetFloat("xDir", direction.x);
+                animator.SetFloat("yDir", Mathf.Abs(direction.z));
+
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    charMov.setPlayerSpeed(10f);
+                }
+                else if (Input.GetKeyUp(KeyCode.LeftShift))
+                {
+                    charMov.setPlayerSpeed(6f);
+                }
             }
-            
-        }
+            else
+            {
+                animator.SetBool("isRunning", false);
+                runSound.enabled = false;
+            }
+            if (Input.GetMouseButton(0))
+            {
+                if (isHoldingWeapon == false)
+                {
+                    animator.SetTrigger("isPunching");
+                    punchSound.enabled = false;
+                    punchSound.enabled = true;
+                }
+                else if (isHoldingWeapon == true)
+                {
+                    animator.SetTrigger("isAttacking");
+                    attackSound.enabled = false;
+                    attackSound.enabled = true;
+                }
+
+            }
 
 
-        if (Input.GetMouseButton(1))
-        {
-            animator.SetBool("isRolling", true);
-        }
-        else
-        {
-            animator.SetBool("isRolling", false);
+            if (Input.GetMouseButton(1))
+            {
+                rollingSound.enabled = false;
+                animator.SetBool("isRolling", true);
+                rollingSound.enabled = true;
+            }
+            else
+            {
+                animator.SetBool("isRolling", false);
+            }
         }
     }
 }

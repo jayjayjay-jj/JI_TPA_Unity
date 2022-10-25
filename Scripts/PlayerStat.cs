@@ -7,17 +7,17 @@ using TMPro;
 
 public class PlayerStat : MonoBehaviour
 { 
-    public static int minXP = 0;
+    public static float minXP = 0;
 
-    public static int maxHP = 1000;
-    public static int maxXP = 100;
+    public static float maxHP = 1000;
+    public static float maxXP = 100;
 
-    public static float agility = 1;
-    public static float power = 1;
-    public static float strength = 1;
+    public static float agility;
+    public static float power;
+    public static float strength;
 
-    public int currentHP;
-    public int currentXP;
+    public float currentHP;
+    public float currentXP;
     public static int level = 1;
 
     public Slider healthBar;
@@ -28,7 +28,9 @@ public class PlayerStat : MonoBehaviour
 
     public static bool Death;
     public AudioSource playerDeath;
+    public AudioSource levelUpSound;
     public Animator animator;
+    public Animator playerAnimation;
 
     // Start is called before the first frame update   
     void Start()
@@ -36,12 +38,17 @@ public class PlayerStat : MonoBehaviour
         currentHP = maxHP;
         currentXP = minXP;
         level = 1;
+        levelUpSound.enabled = false;
 
         Death = false;
         playerDeath.enabled = false;
 
         healthBar.maxValue = maxHP;
         levelBar.maxValue = maxXP;
+
+        agility = 1;
+        power = 1;
+        strength = 1;
     }
 
     // Update is called once per frame
@@ -53,7 +60,6 @@ public class PlayerStat : MonoBehaviour
             damagetoHP(100);
         }
         */
-
         if(Input.GetKeyDown(KeyCode.R))
         {
             levelPointUp(10);
@@ -65,7 +71,9 @@ public class PlayerStat : MonoBehaviour
         levelBar.value = currentXP;
         xp.SetText(levelBar.value + "/" + levelBar.maxValue);
 
-        if (currentHP <= 0)
+        maxHP = 1000 + (strength * 100);
+
+        if (currentHP <= 0 && Death == false)
         {
             Death = true;
             playerDeath.enabled = true;
@@ -75,7 +83,8 @@ public class PlayerStat : MonoBehaviour
     IEnumerator delay()
     {
         animator.SetTrigger("Fade");
-        yield return new WaitForSeconds(1.5f);
+        playerAnimation.SetTrigger("isDeath");
+        yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
@@ -93,9 +102,11 @@ public class PlayerStat : MonoBehaviour
         } else if(currentXP >= maxXP)
         {
             level++;
+            levelUpSound.enabled = true;
             Debug.Log(level);
             levelValue.SetText("Level " + level);
             currentXP = currentXP - maxXP;
+            currentHP = maxHP;
         }
 
     }

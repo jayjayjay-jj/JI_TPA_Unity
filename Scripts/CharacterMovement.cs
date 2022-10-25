@@ -28,29 +28,33 @@ public class CharacterMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
+        if(PlayerStat.Death == false)
+        {
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
 
-        // Vector3 -> 3D (X, Y, Z)
-        Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
-        Vector3 movementDirection = new Vector3();
+            // Vector3 -> 3D (X, Y, Z)
+            Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
+            Vector3 movementDirection = new Vector3();
 
-        if(direction.magnitude >= 0.1f) {
-            float playerAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camera.eulerAngles.y;
-            float movementAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, playerAngle, ref playerVelocity, playerMaXRotationSpeed);
+            if (direction.magnitude >= 0.1f)
+            {
+                float playerAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camera.eulerAngles.y;
+                float movementAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, playerAngle, ref playerVelocity, playerMaXRotationSpeed);
 
-            movementDirection = Quaternion.Euler(0, playerAngle, 0) * Vector3.forward;
-            movementDirection = movementDirection.normalized;
+                movementDirection = Quaternion.Euler(0, playerAngle, 0) * Vector3.forward;
+                movementDirection = movementDirection.normalized;
 
-            transform.rotation = Quaternion.Euler(0, movementAngle, 0);
+                transform.rotation = Quaternion.Euler(0, movementAngle, 0);
 
+            }
+
+            movementDirection.y += (gravitation * -1);
+            movementDirection.x *= playerSpeed;
+            movementDirection.z *= playerSpeed;
+
+            movement.Move(movementDirection * Time.deltaTime);
         }
-
-        movementDirection.y += (gravitation * -1);
-        movementDirection.x *= playerSpeed;
-        movementDirection.z *= playerSpeed;
-
-        movement.Move(movementDirection * Time.deltaTime);
     }
 
     public void setPlayerSpeed(float playerSpeed)
