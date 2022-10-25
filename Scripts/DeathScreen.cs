@@ -7,25 +7,33 @@ public class DeathScreen : MonoBehaviour
 {
 
     public AudioSource buttonAudio;
+    public Animator animator;
 
     void Start()
     {
         buttonAudio.enabled = false;
     }
 
-    public void clickedButton()
-    {
-        buttonAudio.enabled = true;
-    }
-
     public void mainMenu()
     {
-        SceneManager.LoadScene(0);
+        buttonAudio.enabled = false;
+        buttonAudio.enabled = true;
+        StartCoroutine(delay());
     }
 
     public void quit()
     {
+        buttonAudio.enabled = false;
+        buttonAudio.enabled = true;
         Debug.Log("Quitting game hihi");
+        //fadeScreen();
         Application.Quit();
+    }
+
+    IEnumerator delay()
+    {
+        animator.SetTrigger("Fade");
+        yield return new WaitForSeconds(1.5f);
+        SceneManager.LoadScene(0);
     }
 }

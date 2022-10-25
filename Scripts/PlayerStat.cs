@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 
 public class PlayerStat : MonoBehaviour
-{
+{ 
     public static int minXP = 0;
 
     public static int maxHP = 1000;
@@ -27,6 +27,8 @@ public class PlayerStat : MonoBehaviour
     public TMP_Text levelValue;
 
     public static bool Death;
+    public AudioSource playerDeath;
+    public Animator animator;
 
     // Start is called before the first frame update   
     void Start()
@@ -36,6 +38,7 @@ public class PlayerStat : MonoBehaviour
         level = 1;
 
         Death = false;
+        playerDeath.enabled = false;
 
         healthBar.maxValue = maxHP;
         levelBar.maxValue = maxXP;
@@ -65,10 +68,17 @@ public class PlayerStat : MonoBehaviour
         if (currentHP <= 0)
         {
             Death = true;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            playerDeath.enabled = true;
+            StartCoroutine(delay());
         }
     }
-    
+    IEnumerator delay()
+    {
+        animator.SetTrigger("Fade");
+        yield return new WaitForSeconds(1.5f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
     public void damagetoHP(int damage)
     {
         currentHP -= damage;

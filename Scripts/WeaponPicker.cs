@@ -55,5 +55,6 @@ public class WeaponPicker : MonoBehaviour
         boxCollider.isTrigger = true;
 
         weapon.enabled = true;
+        PlayerMovement.isHoldingWeapon = true;
     }
 }

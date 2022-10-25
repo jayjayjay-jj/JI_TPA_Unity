@@ -14,19 +14,22 @@ public class Bear : MonoBehaviour
     [SerializeField]
     private Animator bearAnimator;
 
-    [SerializeField]
     private bool attackingPlayer;
 
-    [SerializeField]
     private float range;
 
     [SerializeField]
     private PlayerStat playerStat;
 
+    public AudioSource bearAttackAudio;
+
     // Start is called before the first frame update
     void Start()
     {
+        bearAttackAudio = GetComponent<AudioSource>();
+
         attackingPlayer = false;
+        bearAttackAudio.enabled = false;
     }
 
     // Update is called once per frame
@@ -43,11 +46,9 @@ public class Bear : MonoBehaviour
         if(range <= 2f)
         {
             navMeshAgent.isStopped = true;
-            bearAnimator.SetTrigger("Attack1");
-
-            //         playerStat.damagetoHP(100);
-            playerStat.currentHP -= 5;
             bearAnimator.SetBool("Run Forward", false);
+            
+            attack();
 
         } else if(range > 2f && range <= 15f) 
         {
@@ -60,5 +61,12 @@ public class Bear : MonoBehaviour
             bearAnimator.SetBool("Idle", true);
             navMeshAgent.isStopped = true;
         }
+    }
+    void attack()
+    {
+        bearAnimator.SetTrigger("Attack1");
+        bearAttackAudio.enabled = false;
+        playerStat.damagetoHP(1);
+        bearAttackAudio.enabled = true;
     }
 }

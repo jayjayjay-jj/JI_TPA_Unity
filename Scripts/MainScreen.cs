@@ -17,25 +17,25 @@ public class MainScreen : MonoBehaviour
         startButtonAudio.enabled = false;
     }
 
-    public void fading()
+    public void fadeScreen ()
     {
-        fadeScreen(SceneManager.GetActiveScene().buildIndex + 1);
+        StartCoroutine(delay());
     }
-
-    public void fadeScreen (int screen)
+    IEnumerator delay()
     {
-        screenIndex = screen;
-        animator.SetTrigger("FadeOut");
+        animator.SetTrigger("Fade");
+        yield return new WaitForSeconds(1.5f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void clickButton()
     {
         startButtonAudio.enabled = true;
-        fading();
+        fadeScreen();
     }
 
     public void gamePlay()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        fadeScreen();
     }
 }
